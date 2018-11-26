@@ -4,7 +4,6 @@ session_start();
 
 session_regenerate_id(true);
 
-//エラー処理
 if(!isset($_SESSION['id'])){
     header('Location:login.php');
     exit();
@@ -12,11 +11,8 @@ if(!isset($_SESSION['id'])){
     echo '<div class="top_bar"><p>こんにちは！&emsp;' . $_SESSION['email'] .'さん&emsp;<a href="logout.php" class="logout_button">ログアウト</a></p></div>';
 }
 
-
 require '../db_info/db_info.php';
 
-
-//idを取得
 $comment_id = $_GET['id'];
 
 
@@ -26,7 +22,6 @@ if(isset($_POST["display"])){
 
             $display = true;
 
-            //データベース接続
             $dbh = new PDO(
                 'mysql:host=' . $host . '; dbname=' . $db_name . '; charset=utf8',
                 $user,
@@ -37,14 +32,12 @@ if(isset($_POST["display"])){
                 )
             );
 
-            //SQL操作
             $sql = 'UPDATE com_table SET display=? WHERE id = ?';
             $data[] = $display;
             $data[] = $comment_id;
             $stmt = $dbh->prepare($sql);
             $stmt->execute($data);
 
-            //接続解除
             $dbh = null;
 
             header('Location:dashboard.php');
@@ -57,8 +50,6 @@ if(isset($_POST["display"])){
     }
 
 ?>
-
-
 
 
 <!DOCTYPE html>
