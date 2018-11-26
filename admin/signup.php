@@ -4,11 +4,9 @@
 
     if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
-        //メッセージの初期化
         $error = '';
         $success = '';
 
-        //入力値のチェック
         if(empty($_POST['email']) || empty($_POST['password']) || empty($_POST['password2'])){
             $error = '未入力の項目があります。';
         } elseif(strlen($_POST['email']) > 100 || strlen($_POST['password']) > 15 || strlen($_POST['password2']) > 15){
@@ -24,7 +22,6 @@
 
             try{
 
-                //データベース接続
                 $dbh = new PDO(
                     'mysql:host=' . $host . '; dbname=' . $db_name .'; charset=utf8',
                     $user,
@@ -35,7 +32,6 @@
                     )
                 );
 
-                //入力したメールアドレスがすでに存在するかチェック
                 $check_sql = 'SELECT id FROM user_table WHERE email=?';
                 $check_data[] = $email;
                 $check_stmt = $dbh->prepare($check_sql);
@@ -44,7 +40,6 @@
                 $row = $check_stmt->fetch(PDO::FETCH_ASSOC);
 
                 if($row == false){
-                    //メールアドレスが使われていなかったら追加処理
                     $sql = 'INSERT INTO user_table(email,password) VALUES (?,?)';
                     $data[] = $email;
                     $data[] = $password1;
@@ -53,10 +48,8 @@
 
                     $success = '新規登録が完了しました。<a href="login.php">ログインページ</a>からログインしてください。';
                 } else {
-                    //すでに入力したアドレスのデータがあればエラー
                     $error = 'このメールアドレスはすでに使われています。';
                 }
-
 
             }catch(PDOException $e){
                 echo '<div class="server_error">現在サーバーエラーが発生しています。</div>';
@@ -68,7 +61,6 @@
 
 
 ?>
-
 
 
 
