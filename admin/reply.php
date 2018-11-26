@@ -4,7 +4,6 @@ session_start();
 
 session_regenerate_id(true);
 
-//エラー処理
 if(!isset($_SESSION['id'])){
     header('Location:login.php');
     exit();
@@ -12,17 +11,13 @@ if(!isset($_SESSION['id'])){
     echo '<div class="top_bar"><p>こんにちは！&emsp;' . $_SESSION['email'] .'さん&emsp;<a href="logout.php" class="logout_button">ログアウト</a></p></div>';
 }
 
-
 require '../db_info/db_info.php';
 
-
-//idを取得
 $comment_id = $_GET['id'];
 
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
-    //メッセージの初期化
     $error = '';
     $success = '';
 
@@ -35,7 +30,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
         try{
 
-            //データベース接続
             $dbh = new PDO(
                 'mysql:host=' . $host . '; dbname=' . $db_name . '; charset=utf8',
                 $user,
@@ -46,7 +40,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 )
             );
 
-            //SQL操作
             $sql = 'UPDATE com_table SET reply=? WHERE id = ?';
             $data[] = $reply;
             $data[] = $comment_id;
@@ -67,8 +60,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 }
 
 ?>
-
-
 
 
 <!DOCTYPE html>
