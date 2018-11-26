@@ -4,7 +4,6 @@ session_start();
 
 session_regenerate_id(true);
 
-//エラー処理
 if(!isset($_SESSION['id'])){
     header('Location:login.php');
     exit();
@@ -12,10 +11,8 @@ if(!isset($_SESSION['id'])){
     echo '<div class="top_bar"><p>こんにちは！&emsp;' . $_SESSION['email'] .'さん&emsp;<a href="logout.php" class="logout_button">ログアウト</a></p></div>';
 }
 
-
 require '../db_info/db_info.php';
 
-//idを取得
 $comment_id = $_GET['id'];
 
 
@@ -36,7 +33,6 @@ try{
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
-    //メッセージの初期化
     $error = '';
     $success = '';
 
@@ -49,7 +45,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
         try{
 
-            //SQL操作
             $sql = 'UPDATE com_table SET comment=? WHERE id = ?';
             $data[] = $comment;
             $data[] = $comment_id;
@@ -94,7 +89,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 echo '<ul class="success"><li>' . $success . '</li></ul>';
             }
 
-            //現在のコメントを取得
             $check_sql = 'SELECT comment FROM com_table WHERE id = ?';
             $check_data[] = $comment_id;
             $check_stmt = $dbh->prepare($check_sql);
@@ -103,7 +97,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $row = $check_stmt->fetch(PDO::FETCH_ASSOC);
             $now_com = $row['comment'];
 
-            //接続解除
             $dbh = null;
 
         ?>
