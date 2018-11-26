@@ -4,7 +4,6 @@
 
     session_regenerate_id(true);
 
-    //エラー処理
     if(!isset($_SESSION['id'])){
         header('Location:login.php');
         exit();
@@ -13,7 +12,6 @@
     }
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -43,7 +41,6 @@
 
                 require '../db_info/db_info.php';
 
-                //データベース接続
                 $dbh = new PDO(
                     'mysql:host=' . $host . '; dbname=' . $db_name . '; charset=utf8',
                     $user,
@@ -54,13 +51,10 @@
                     )
                 );
 
-
-                //sql
                 $sql = 'SELECT * FROM com_table WHERE 1';
                 $stmt = $dbh->prepare($sql);
                 $stmt->execute();
 
-                //すべてのコメントを表示
                 while(true){
                     $row = $stmt->fetch(PDO::FETCH_ASSOC);
                     if($row == false){
@@ -71,7 +65,6 @@
 
                 }
 
-                //データベース接続解除
                 $dbh = null;
 
                 ?>
